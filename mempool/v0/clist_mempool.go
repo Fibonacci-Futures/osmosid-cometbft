@@ -63,6 +63,10 @@ type CListMempool struct {
 
 var _ mempool.Mempool = &CListMempool{}
 
+func (txmp *CListMempool) UnconfirmedTxChan() <-chan types.UnconfirmedTx {
+	return nil
+}
+
 // CListMempoolOption sets an optional parameter on the mempool.
 type CListMempoolOption func(*CListMempool)
 

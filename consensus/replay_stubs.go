@@ -26,7 +26,9 @@ func (emptyMempool) CheckTx(_ types.Tx, _ func(*abci.Response), _ mempl.TxInfo) 
 func (txmp emptyMempool) RemoveTxByKey(txKey types.TxKey) error {
 	return nil
 }
-
+func (emptyMempool) UnconfirmedTxChan() <-chan types.UnconfirmedTx {
+	return nil
+}
 func (emptyMempool) ReapMaxBytesMaxGas(_, _ int64) types.Txs { return types.Txs{} }
 func (emptyMempool) ReapMaxTxs(n int) types.Txs              { return types.Txs{} }
 func (emptyMempool) Update(

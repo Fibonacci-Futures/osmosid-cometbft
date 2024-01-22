@@ -1,0 +1,34 @@
+File node/node.go
+    line 705 func NewNode(config *cfg.Config,
+
+
+File mempool/v1/mempool.go:
+    line 448 	func (txmp *TxMempool) addNewTransaction(
+    line 582 	txmp.insertTx(wtx)
+    ...
+
+File  types/event_bus.go:
+    `Search for pubsub.Publish`
+    example line 176 	func (b *EventBus) PublishEventTx(data EventDataTx) error {
+
+
+
+File rpc/core/mempool.go
+    line 151 func UnconfirmedTxs(ctx *rpctypes.Context, limitPtr *int) (*ctypes.ResultUnconfirmedTxs, error) {
+    (for know where are stored the transactions)
+
+File types/events.go
+    (good to know how queries are build)
+
+File types/tx.go
+    (Tx is a type that just are bytes)
+
+File libs/pubsub/pubsub.go
+
+File mempool/v0/clist_mempool.go
+    (old mempool)
+
+File rpc/core/routes.go
+
+File libs/pubsub/pubsub_test.go
+    (test)
