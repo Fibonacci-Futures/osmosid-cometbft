@@ -1,3 +1,9 @@
+The target ws should work with 
+the query:
+
+`get_unconfirmed_txs=1`
+
+
 File node/node.go
     line 705 func NewNode(config *cfg.Config,
 
@@ -13,12 +19,19 @@ File  types/event_bus.go:
 
 
 
+
 File rpc/core/mempool.go
     line 151 func UnconfirmedTxs(ctx *rpctypes.Context, limitPtr *int) (*ctypes.ResultUnconfirmedTxs, error) {
     (for know where are stored the transactions)
 
 File types/events.go
     (good to know how queries are build)
+    like:
+        PublishEventNewBlock(block EventDataNewBlock) error
+        PublishEventNewBlockHeader(header EventDataNewBlockHeader) error
+        PublishEventNewEvidence(evidence EventDataNewEvidence) error
+        PublishEventTx(EventDataTx) error
+        PublishEventValidatorSetUpdates(EventDataValidatorSetUpdates) error
 
 File types/tx.go
     (Tx is a type that just are bytes)

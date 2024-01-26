@@ -57,11 +57,11 @@ type TxMempool struct {
 	txByKey    map[types.TxKey]*clist.CElement
 	txBySender map[string]*clist.CElement // for sender != ""
 
-	unconfirmedTxChan chan types.UnconfirmedTx // one value sent per height when mempool is not empty
+	eventBus types.MempoolEventPublisher // one value sent per height when mempool is not empty
 }
 
-func (txmp *TxMempool) UnconfirmedTxChan() <-chan types.UnconfirmedTx {
-	return txmp.unconfirmedTxChan
+func (txmp *TxMempool) SetEventBus(eventBus types.MempoolEventPublisher) {
+	txmp.eventBus = eventBus
 }
 
 // NewTxMempool constructs a new, empty priority mempool at the specified
@@ -586,16 +586,7 @@ func (txmp *TxMempool) addNewTransaction(wtx *WrappedTx, checkTxRes *abci.Respon
 	wtx.SetPriority(priority)
 	wtx.SetSender(sender)
 	txmp.insertTx(wtx)
-
-	txmp.mtx.Lock()
-	txmp.unconfirmedTxChan <- types.UnconfirmedTx{
-		TxData:    wtx.tx,
-		Hash:      wtx.hash,
-		Height:    wtx.height,
-		Timestamp: wtx.timestamp,
-		Sender:    wtx.sender,
-	}
-	txmp.mtx.Unlock()
+	txmp.PublishUnconfirmedTx(wtx)
 
 	txmp.metrics.TxSizeBytes.Observe(float64(wtx.Size()))
 	txmp.metrics.Size.Set(float64(txmp.Size()))

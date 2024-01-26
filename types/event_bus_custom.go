@@ -8,9 +8,13 @@ import (
 // mempoolv1 "github.com/cometbft/cometbft/mempool/v1" //nolint:staticcheck // SA1019 Priority mempool deprecated but still supported in this release.
 
 const (
-	UnConfirmedTxsKey = "utx.hash"
+	UnConfirmedTxsKey = "get_unconfirmed_txs"
 )
 
+// BlockEventPublisher publishes all block related events
+type MempoolEventPublisher interface {
+	PublishUnconfirmedTx(data UnconfirmedTx) error
+}
 type UnconfirmedTx struct {
 	TxData    Tx        // the original transaction data
 	Hash      TxKey     // the transaction hash
@@ -23,13 +27,10 @@ type UnconfirmedTx struct {
 	// peers     map[uint16]bool // peer IDs who have sent us this transaction
 }
 
-func (b *EventBus) PublishUnconfirmedTx(data string) error {
-	// no explicit deadline for publishing events
+func (b *EventBus) PublishUnconfirmedTx(data UnconfirmedTx) error {
 	ctx := context.Background()
 	events := make(map[string][]string)
-
-	events[UnConfirmedTxsKey] = append(events[UnConfirmedTxsKey], "1") //utx.hash=1 for now
-	// data := UnconfirmedTx{Hash: hash}
+	events[UnConfirmedTxsKey] = append(events[UnConfirmedTxsKey], "1") //get_unconfirmed_txs=1
 	return b.pubsub.PublishWithEvents(ctx, data, events)
 }
 
