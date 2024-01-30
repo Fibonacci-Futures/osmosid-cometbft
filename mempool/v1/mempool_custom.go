@@ -6,6 +6,11 @@ import (
 )
 
 func (txmp *TxMempool) PublishUnconfirmedTx(wtx *WrappedTx) {
+	if txmp.eventBus == nil {
+		return
+		// panic("eventBus is nil")
+	}
+
 	txmp.eventBus.PublishUnconfirmedTx(types.UnconfirmedTx{
 		TxData:    wtx.tx,
 		Hash:      wtx.hash,

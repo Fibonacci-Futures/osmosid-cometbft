@@ -30,6 +30,8 @@ func (_m *Mempool) CheckTx(tx types.Tx, callback func(*abcitypes.Response), txIn
 	return r0
 }
 
+func (_m *Mempool) SetEventBus(eventBus types.MempoolEventPublisher) {
+}
 // EnableTxsAvailable provides a mock function with given fields:
 func (_m *Mempool) EnableTxsAvailable() {
 	_m.Called()
